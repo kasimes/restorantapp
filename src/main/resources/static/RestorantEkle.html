@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Restoran Ekle</title>
+</head>
+<body>
+<h2>Restoran Ekle</h2>
+
+<label>Restorant Adı </label>
+<input type="text" id="name" placeholder="İsim"><br><br>
+
+<label>Adres:</label>
+<input type="text" id="address" placeholder="Adres"><br><br>
+
+<button onclick="ekle()">Restoran Ekle</button>
+
+<h3>Sonuç:</h3>
+<pre id="sonuc"></pre>
+<pre name="sonuc"></pre>
+
+<script>
+  function ekle() {
+    const name = document.getElementById('name').value;
+    const address = document.getElementById('address').value;
+
+    fetch('http://localhost:8080/restaurants', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, address })
+    })
+            .then(response => response.json())
+            .then(data => {
+              document.getElementById('sonuc').textContent = JSON.stringify(data, null, 2);
+              alert("Restoran başarıyla eklendi!");
+            })
+            .catch(error => {
+              console.error('Hata:', error);
+              alert("Bir hata oluştu!");
+            });
+  }
+</script>
+</body>
+</html>

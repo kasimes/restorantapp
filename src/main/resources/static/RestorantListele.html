@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restoran Listesi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 50%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2a654;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        h2 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Restoran Listesi</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>İsim</th>
+        <th>Adres</th>
+    </tr>
+    </thead>
+    <tbody id="restoranTablo">
+    </tbody>
+</table>
+
+<script>
+    fetch('http://localhost:8080/restaurants')
+        .then(response => response.json())
+        .then(data => {
+            const tablo = document.getElementById('restoranTablo');
+            data.forEach(restoran => {
+                const satir = document.createElement('tr');
+                satir.innerHTML = `
+                    <td>${restoran.id}</td>
+                    <td>${restoran.name}</td>
+                    <td>${restoran.address}</td>
+                `;
+                tablo.appendChild(satir);
+            });
+        })
+        .catch(error => {
+            console.error('Hata:', error);
+            alert("Liste alınamadı!");
+        });
+</script>
+
+</body>
+</html>

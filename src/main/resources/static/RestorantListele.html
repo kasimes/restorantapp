@@ -37,6 +37,9 @@
         <th>ID</th>
         <th>İsim</th>
         <th>Adres</th>
+        <th>Email</th>
+        <th>Telefon No</th>
+        <th> Tarih</th>
     </tr>
     </thead>
     <tbody id="restoranTablo">
@@ -54,6 +57,9 @@
                     <td>${restoran.id}</td>
                     <td>${restoran.name}</td>
                     <td>${restoran.address}</td>
+                    <td>${restoran.email}</td>
+                    <td>${restoran.phone}</td>
+                    <td>${restoran.createdAt}</td>
                 `;
                 tablo.appendChild(satir);
             });

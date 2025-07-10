@@ -1,4 +1,4 @@
-package com.ornek.restorant.restorantapp.Enums;
+package com.ornek.restorant.restorantapp.enums;
 
 public enum AvailabilityStatus {
     MEVCUT,

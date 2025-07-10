@@ -1,6 +1,6 @@
 package com.ornek.restorant.restorantapp.entity;
 
-import com.ornek.restorant.restorantapp.Enums.OrderStatus;
+import com.ornek.restorant.restorantapp.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,15 +32,12 @@ public class Order {
     private Restaurant restaurant  ;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status",nullable = false)
+    @Column(name = "status",insertable = false,nullable = false)
     private OrderStatus orderStatus;
 
     private LocalDateTime orderTime;
 
     private Double totalPrice;
-
-    private String status;
-
 
     @PrePersist
     protected void onCreate() {

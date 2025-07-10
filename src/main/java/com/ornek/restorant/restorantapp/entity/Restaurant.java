@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 @Entity
-@Table(name = "Restaurant")
+@Table(name = "restaurant")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,8 +37,5 @@ public class Restaurant {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-
-
 
 }

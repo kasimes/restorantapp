@@ -1,13 +1,13 @@
 package com.ornek.restorant.restorantapp.service;
 
-import com.ornek.restorant.restorantapp.entity.Restaurant;
+import com.ornek.restorant.restorantapp.model.RestaurantDto;
 import java.util.List;
 
 
 public interface RestorantService {
-    Restaurant save(Restaurant restaurant);
-    List<Restaurant> findAll();
-    Restaurant findById(Long id);
-    Restaurant update(Long id, Restaurant restaurant);
+    RestaurantDto save(RestaurantDto  restaurantDto );
+    List<RestaurantDto> findAll();
+    RestaurantDto findById(Long id);
+    RestaurantDto update(Long id, RestaurantDto dto);
     void delete(Long id);
 }

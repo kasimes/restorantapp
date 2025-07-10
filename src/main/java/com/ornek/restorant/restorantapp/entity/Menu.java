@@ -9,12 +9,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "Menu")
+@Table(name = "menu")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-
 public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +24,7 @@ public class Menu {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id", nullable = false)
+    @JoinColumn(name = "restorant_id", nullable = false)
     private Restaurant restaurant;
 
     @Column(name = "created_at")

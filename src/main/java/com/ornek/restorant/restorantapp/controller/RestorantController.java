@@ -1,43 +1,44 @@
 package com.ornek.restorant.restorantapp.controller;
 
-import com.ornek.restorant.restorantapp.model.RestaurantDto;
-import com.ornek.restorant.restorantapp.service.RestorantService;
+import com.ornek.restorant.restorantapp.model.dto.RestaurantDto;
+
+import com.ornek.restorant.restorantapp.service.RestaurantService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/restorant")
+@RequestMapping("/api/restaurants")
 public class RestorantController {
 
-    private final RestorantService restorantService;
+    private final RestaurantService restaurantService;
 
-    public RestorantController(RestorantService restorantService) {
-        this.restorantService = restorantService;
+    public RestorantController(RestaurantService restaurantService) {
+        this.restaurantService = restaurantService;
     }
-
-    @PostMapping
-    public RestaurantDto create(@RequestBody RestaurantDto restaurantDto) {
-        return restorantService.save(restaurantDto);
-    }
-
     @GetMapping
-    public List<RestaurantDto> getAll() {
-        return restorantService.findAll();
+    public ResponseEntity<List<RestaurantDto>> getAllRestaurants() {
+        return ResponseEntity.ok(restaurantService.getAllRestaurants());
     }
 
     @GetMapping("/{id}")
-    public RestaurantDto getById(@PathVariable Long id) {
-        return restorantService.findById(id);
+    public ResponseEntity<RestaurantDto> getRestaurantById(@PathVariable Long id) {
+        return ResponseEntity.ok(restaurantService.getRestaurantById(id));
     }
 
-    @PutMapping("/{id}")
-    public RestaurantDto update(@PathVariable Long id, @RequestBody RestaurantDto restaurantDto) {
-        return restorantService.update(id, restaurantDto);
+    @PostMapping
+    public ResponseEntity<RestaurantDto> createRestaurant(@RequestBody RestaurantDto restaurantDto) {
+        return ResponseEntity.ok(restaurantService.createRestaurant(restaurantDto));
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<RestaurantDto> updateRestaurant(@PathVariable Long id, @RequestBody RestaurantDto restaurantDto) {
+        return ResponseEntity.ok(restaurantService.updateRestaurant(id, restaurantDto));
+    }
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        restorantService.delete(id);
+    public ResponseEntity<RestaurantDto> deleteRestaurant(@PathVariable Long id) {
+        restaurantService.deleteRestaurant(id);
+        return ResponseEntity.ok().build();
     }
 }

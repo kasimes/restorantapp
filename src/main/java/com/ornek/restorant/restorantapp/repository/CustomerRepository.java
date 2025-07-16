@@ -1,6 +1,6 @@
 package com.ornek.restorant.restorantapp.repository;
 
-import com.ornek.restorant.restorantapp.entity.Customer;
+import com.ornek.restorant.restorantapp.model.entity.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

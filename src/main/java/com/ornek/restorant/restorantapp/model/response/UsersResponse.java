@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class CustomerResponse {
+public class UsersResponse {
     private Long id;
     private String firstName;
     private String lastName;

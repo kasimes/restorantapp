@@ -1,10 +1,10 @@
 package com.ornek.restorant.restorantapp.controller;
 
 
-import com.ornek.restorant.restorantapp.model.dto.CustomerDto;
+import com.ornek.restorant.restorantapp.model.dto.UsersDto;
 
 
-import com.ornek.restorant.restorantapp.service.CustomerService;
+import com.ornek.restorant.restorantapp.service.UsersService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,34 +15,34 @@ import java.util.List;
 @RequestMapping("/api/customers")
 public class CustomerControl {
 
-    private final CustomerService customerService;
+    private final UsersService usersService;
 
 
-    public CustomerControl( CustomerService customerService) {
-        this.customerService = customerService;
+    public CustomerControl( UsersService usersService) {
+        this.usersService = usersService;
 
     }
     @GetMapping
-    public ResponseEntity<List<CustomerDto>> getAllCustomers() {
-        return ResponseEntity.ok(customerService.getCustomers());
+    public ResponseEntity<List<UsersDto>> getAllCustomers() {
+        return ResponseEntity.ok(usersService.getCustomers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerDto> getCustomerById(@PathVariable long id) {
-        return ResponseEntity.ok(customerService.getCustomerById(id));
+    public ResponseEntity<UsersDto> getCustomerById(@PathVariable long id) {
+        return ResponseEntity.ok(usersService.getCustomerById(id));
 
     }
     @PostMapping
-    public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerDto customerDto) {
-        return ResponseEntity.ok(customerService.createCustomer(customerDto));
+    public ResponseEntity<UsersDto> createCustomer(@RequestBody UsersDto usersDto) {
+        return ResponseEntity.ok(usersService.createCustomer(usersDto));
     }
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerDto> updateCustomer(@RequestBody CustomerDto customerDto, @PathVariable long id) {
-        return ResponseEntity.ok(customerService.updateCustomer(id, customerDto));
+    public ResponseEntity<UsersDto> updateCustomer(@RequestBody UsersDto usersDto, @PathVariable long id) {
+        return ResponseEntity.ok(usersService.updateCustomer(id, usersDto));
     }
     @DeleteMapping("{id}")
-    public ResponseEntity<CustomerDto> deleteCustomer(@PathVariable long id) {
-        customerService.deleteCustomer(id);
+    public ResponseEntity<UsersDto> deleteCustomer(@PathVariable long id) {
+        usersService.deleteCustomer(id);
         return ResponseEntity.ok().build();
     }
 

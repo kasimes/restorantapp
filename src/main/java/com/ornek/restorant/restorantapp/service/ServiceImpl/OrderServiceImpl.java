@@ -2,10 +2,12 @@ package com.ornek.restorant.restorantapp.service.ServiceImpl;
 
 import com.ornek.restorant.restorantapp.model.converter.OrderConverter;
 import com.ornek.restorant.restorantapp.model.dto.OrderDto;
-import com.ornek.restorant.restorantapp.model.entity.Customer;
+import com.ornek.restorant.restorantapp.model.entity.Branch;
+import com.ornek.restorant.restorantapp.model.entity.Users;
 import com.ornek.restorant.restorantapp.model.entity.Order;
 import com.ornek.restorant.restorantapp.model.entity.Restaurant;
-import com.ornek.restorant.restorantapp.repository.CustomerRepository;
+import com.ornek.restorant.restorantapp.repository.BranchRepository;
+import com.ornek.restorant.restorantapp.repository.UsersRepository;
 import com.ornek.restorant.restorantapp.repository.OrderRepository;
 import com.ornek.restorant.restorantapp.repository.RestaurantRepository;
 import com.ornek.restorant.restorantapp.service.OrderService;
@@ -21,15 +23,16 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
     private  final OrderRepository orderRepository;
     private final OrderConverter orderConverter;
-    private final CustomerRepository  customerRepository;
-    private final RestaurantRepository restaurantRepository;
+    private final UsersRepository usersRepository;
+    private final BranchRepository branchRepository;
     
 
-    public OrderServiceImpl(OrderRepository orderRepository, OrderConverter orderConverter, CustomerRepository customerRepository, RestaurantRepository restaurantRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderConverter orderConverter, UsersRepository usersRepository, RestaurantRepository restaurantRepository, BranchRepository branchRepository) {
         this.orderRepository = orderRepository;
         this.orderConverter = orderConverter;
-        this.customerRepository = customerRepository;
-        this.restaurantRepository = restaurantRepository;
+        this.usersRepository = usersRepository;
+        this.branchRepository = branchRepository;
+
     }
 
     @Override
@@ -49,16 +52,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
-        Customer customer = customerRepository.findById(orderDto.getCustomerId())
+        Users users = usersRepository.findById(orderDto.getCustomerId())
                 .orElseThrow(() -> new RuntimeException("Customer not found with id: " + orderDto.getCustomerId()));
 
-        Restaurant restaurant = restaurantRepository.findById(orderDto.getRestaurantId())
-                .orElseThrow(() -> new RuntimeException("Restaurant not found with id: " + orderDto.getRestaurantId()));
+        Branch branch = branchRepository.findById(orderDto.getBranchId())
+                .orElseThrow(() -> new RuntimeException("Branch not found"));
 
-        Order order = OrderConverter.toEntity(orderDto, customer, restaurant);
-        Order savedOrder = orderRepository.save(order);
+        Order order = OrderConverter.toEntity(orderDto,users,branch);
+        order = orderRepository.save(order);
 
-        return orderConverter.toDto(savedOrder);
+
+        return orderConverter.toDto(order);
     }
 
     @Override
@@ -67,14 +71,14 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
 
-        Customer customer = customerRepository.findById(orderDto.getCustomerId())
+        Users users = usersRepository.findById(orderDto.getCustomerId())
                 .orElseThrow(() -> new RuntimeException("Customer not found with id: " + orderDto.getCustomerId()));
 
-        Restaurant restaurant = restaurantRepository.findById(orderDto.getRestaurantId())
-                .orElseThrow(() -> new RuntimeException("Restaurant not found with id: " + orderDto.getRestaurantId()));
+        Branch branch = branchRepository.findById(orderDto.getBranchId())
+                .orElseThrow(() -> new RuntimeException("Branch not found"));
 
-        order.setCustomer(customer);
-        order.setRestaurant(restaurant);
+        order.setUsers(users);
+        order.setBranch(branch);
         order.setOrderStatus(orderDto.getOrderStatus());
         order.setOrderTime(orderDto.getOrderTime());
         order.setTotalPrice(orderDto.getTotalPrice());

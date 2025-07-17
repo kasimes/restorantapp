@@ -10,7 +10,7 @@ import lombok.*;
 public class OrderDto {
     private Long id;
     private Long customerId;
-    private Long restaurantId;
+    private Long branchId;
     private OrderStatus orderStatus;
     private LocalDateTime orderTime;
     private Double totalPrice;

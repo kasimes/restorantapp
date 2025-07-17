@@ -4,7 +4,7 @@ import lombok.*;
 
 
 @Data
-public class CustomerDto {
+public class UsersDto {
     private Long id;
     private String firstName;
     private String lastName;

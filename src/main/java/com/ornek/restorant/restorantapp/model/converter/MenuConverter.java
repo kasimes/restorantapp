@@ -16,9 +16,7 @@ public class MenuConverter {
         dto.setId(menu.getId());
         dto.setName(menu.getName());
         dto.setDescription(menu.getDescription());
-        if(menu.getRestaurant() != null) {
-            dto.setRestaurantId(menu.getRestaurant().getId());
-        }
+
         return dto;
     }
 

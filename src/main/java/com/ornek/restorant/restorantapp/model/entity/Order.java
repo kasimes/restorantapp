@@ -18,18 +18,21 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false)
     @JoinColumn(name="customer_id")
-    private Customer customer;
+    private Users users;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name="restaurant_id")
-    private Restaurant restaurant  ;
+
+
+    @ManyToOne
+    @JoinColumn(name = "branch_id", nullable = false)
+    private Branch branch;
+
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status",insertable = false,nullable = false)
@@ -39,10 +42,5 @@ public class Order {
 
     private Double totalPrice;
 
-    @PrePersist
-    protected void onCreate() {
-        if (orderTime == null) {
-            orderTime = LocalDateTime.now();
-        }
-    }
+
 }

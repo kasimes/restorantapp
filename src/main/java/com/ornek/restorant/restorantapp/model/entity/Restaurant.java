@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -15,7 +17,7 @@ import lombok.AllArgsConstructor;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Restaurant {
+public class Restaurant extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,14 +30,12 @@ public class Restaurant {
 
     private String email;
 
-    @PrePersist
-    protected void onCreate() {
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
-    }
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+
+
+
+
+    @OneToMany(mappedBy = "restaurant")
+    private List<Branch> branches;
 
 }

@@ -42,7 +42,7 @@ public class MenuServiceImpl implements MenuService {
         Menu menu = new Menu();
         menu.setName(menuDto.getName());
         menu.setDescription(menuDto.getDescription());
-        menu.setRestaurant(restaurant);
+
         Menu savedMenu = menuRepository.save(menu);
         return MenuConverter.toDto(savedMenu);
     }
@@ -56,7 +56,7 @@ public class MenuServiceImpl implements MenuService {
 
         menu.setName(menuDto.getName());
         menu.setDescription(menuDto.getDescription());
-        menu.setRestaurant(restaurant);
+
 
         Menu updatedMenu = menuRepository.save(menu);
         return MenuConverter.toDto(updatedMenu);

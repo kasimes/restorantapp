@@ -1,16 +1,17 @@
 package com.ornek.restorant.restorantapp.model.entity;
 
+import com.ornek.restorant.restorantapp.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
 
 @Entity
-@Table(name = "customer")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
+public class Users extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,6 +19,9 @@ public class Customer {
     private String lastName;
     private String email;
     private String phoneNumber;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 
 }

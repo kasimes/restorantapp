@@ -1,5 +1,6 @@
 package com.ornek.restorant.restorantapp.service.ServiceImpl;
 
+import com.ornek.restorant.restorantapp.exception.RestaurantNotFoundException;
 import com.ornek.restorant.restorantapp.model.dto.RestaurantDto;
 import com.ornek.restorant.restorantapp.model.entity.Restaurant;
 import com.ornek.restorant.restorantapp.repository.RestaurantRepository;
@@ -31,7 +32,7 @@ public class RestaurantSeviceImpl implements RestaurantService {
     @Override
     public RestaurantDto getRestaurantById(Long id) {
         Restaurant  restaurant = restaurantRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Restaurant not found"));
+                .orElseThrow(()-> new RestaurantNotFoundException("Restaurant not found"));
         return RestaurantConverter.toDto(restaurant);
 
     }
@@ -47,7 +48,7 @@ public class RestaurantSeviceImpl implements RestaurantService {
     public RestaurantDto updateRestaurant(Long id, RestaurantDto restaurantDto) {
 
         Restaurant existing = restaurantRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Restaurant not found whit id:" + id));
+                .orElseThrow(()-> new RestaurantNotFoundException("Restaurant not found whit id:" + id));
          existing.setName(restaurantDto.getName());
          existing.setAddress(restaurantDto.getAddress());
          Restaurant updated = restaurantRepository.save(existing);
@@ -59,7 +60,7 @@ public class RestaurantSeviceImpl implements RestaurantService {
     @Override
     public void deleteRestaurant(Long id) {
         Restaurant restaurant = restaurantRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Restaurant not found" + id));
+                .orElseThrow(()-> new RestaurantNotFoundException("Restaurant not found" + id));
         restaurantRepository.delete(restaurant);
     }
 }

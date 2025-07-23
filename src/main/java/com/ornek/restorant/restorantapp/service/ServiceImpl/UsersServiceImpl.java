@@ -1,5 +1,6 @@
 package com.ornek.restorant.restorantapp.service.ServiceImpl;
 
+import com.ornek.restorant.restorantapp.exception.CustomerNotFoundException;
 import com.ornek.restorant.restorantapp.model.converter.UsersConverter;
 import com.ornek.restorant.restorantapp.model.dto.UsersDto;
 import com.ornek.restorant.restorantapp.model.entity.Users;
@@ -35,7 +36,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public UsersDto getCustomerById(long id) {
         Users users = usersRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Customer not found with id: " + id));
+                .orElseThrow(()-> new CustomerNotFoundException("Customer not found with id: " + id));
                 return usersConverter.toDto(users);
 
     }
@@ -49,7 +50,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public UsersDto updateCustomer(long id, UsersDto usersDto) {
         Users existingUsers = usersRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Customer not found with id: " + id));
+                .orElseThrow(()-> new CustomerNotFoundException("Customer not found with id: " + id));
 
         existingUsers.setFirstName(usersDto.getFirstName());
         existingUsers.setLastName(usersDto.getLastName());
@@ -63,7 +64,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void deleteCustomer(long id) {
         Users existingUsers = usersRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Customer not found with id: " + id));
+                .orElseThrow(()-> new CustomerNotFoundException("Customer not found with id: " + id));
         usersRepository.delete(existingUsers);
     }
 

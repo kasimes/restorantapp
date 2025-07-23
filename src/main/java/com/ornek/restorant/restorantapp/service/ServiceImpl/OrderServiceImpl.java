@@ -1,5 +1,8 @@
 package com.ornek.restorant.restorantapp.service.ServiceImpl;
 
+import com.ornek.restorant.restorantapp.exception.BranchNotFoundException;
+import com.ornek.restorant.restorantapp.exception.CustomerNotFoundException;
+import com.ornek.restorant.restorantapp.exception.OrderNotFoundException;
 import com.ornek.restorant.restorantapp.model.converter.OrderConverter;
 import com.ornek.restorant.restorantapp.model.dto.OrderDto;
 import com.ornek.restorant.restorantapp.model.entity.Branch;
@@ -46,17 +49,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto getOrderById(long id) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
+                .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + id));
         return orderConverter.toDto(order);
     }
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
         Users users = usersRepository.findById(orderDto.getCustomerId())
-                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + orderDto.getCustomerId()));
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + orderDto.getCustomerId()));
 
         Branch branch = branchRepository.findById(orderDto.getBranchId())
-                .orElseThrow(() -> new RuntimeException("Branch not found"));
+                .orElseThrow(() -> new BranchNotFoundException("Branch not found"));
 
         Order order = OrderConverter.toEntity(orderDto,users,branch);
         order = orderRepository.save(order);
@@ -69,13 +72,13 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto updateOrder(Long id, OrderDto orderDto) {
 
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
+                .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + id));
 
         Users users = usersRepository.findById(orderDto.getCustomerId())
-                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + orderDto.getCustomerId()));
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + orderDto.getCustomerId()));
 
         Branch branch = branchRepository.findById(orderDto.getBranchId())
-                .orElseThrow(() -> new RuntimeException("Branch not found"));
+                .orElseThrow(() -> new BranchNotFoundException("Branch not found"));
 
         order.setUsers(users);
         order.setBranch(branch);

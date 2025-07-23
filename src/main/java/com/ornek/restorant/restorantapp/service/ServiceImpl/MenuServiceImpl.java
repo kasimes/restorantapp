@@ -1,5 +1,7 @@
 package com.ornek.restorant.restorantapp.service.ServiceImpl;
 
+import com.ornek.restorant.restorantapp.exception.MenuNotFoundException;
+import com.ornek.restorant.restorantapp.exception.RestaurantNotFoundException;
 import com.ornek.restorant.restorantapp.model.converter.MenuConverter;
 import com.ornek.restorant.restorantapp.model.dto.MenuDto;
 import com.ornek.restorant.restorantapp.model.entity.Menu;
@@ -49,10 +51,10 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public MenuDto updateMenu(MenuDto menuDto) {
         Menu menu = menuRepository.findById(menuDto.getId())
-                .orElseThrow(() -> new RuntimeException("Menu not found with id: " + menuDto.getId()));
+                .orElseThrow(() -> new MenuNotFoundException("Menu not found with id: " + menuDto.getId()));
 
         Restaurant restaurant = restaurantRepository.findById(menuDto.getRestaurantId())
-                .orElseThrow(() -> new RuntimeException("Restaurant not found with id: " + menuDto.getRestaurantId()));
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant not found with id: " + menuDto.getRestaurantId()));
 
         menu.setName(menuDto.getName());
         menu.setDescription(menuDto.getDescription());
@@ -64,7 +66,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public void deleteMenu(Long id) {
         Menu menu = menuRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Menu not found with id: " + id));
+                .orElseThrow(() -> new MenuNotFoundException("Menu not found with id: " + id));
         menuRepository.delete(menu);
     }
 

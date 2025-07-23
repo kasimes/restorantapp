@@ -1,5 +1,8 @@
 package com.ornek.restorant.restorantapp.service.ServiceImpl;
 
+import com.ornek.restorant.restorantapp.exception.MenuItemNotFoundException;
+import com.ornek.restorant.restorantapp.exception.OrderItemNotFoundException;
+import com.ornek.restorant.restorantapp.exception.OrderNotFoundException;
 import com.ornek.restorant.restorantapp.model.converter.OrderItemConverter;
 import com.ornek.restorant.restorantapp.model.dto.OrderItemDto;
 import com.ornek.restorant.restorantapp.model.entity.MenuItem;
@@ -39,7 +42,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public OrderItemDto getOrderItemById(Long id) {
         OrderItem orderItem = orderItemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("OrderItem not found with id: " + id));
+                .orElseThrow(() -> new OrderItemNotFoundException("OrderItem not found with id: " + id));
         return OrderItemConverter.toDto(orderItem);
     }
 
@@ -51,13 +54,13 @@ public class OrderItemServiceImpl implements OrderItemService {
 
         // MenuItem DB'den çekiliyor, yoksa hata fırlatılıyor
         MenuItem menuItem = menuItemRepository.findById(orderItemDto.getMenuItemId())
-                .orElseThrow(() -> new RuntimeException("MenuItem bulunamadı: " + orderItemDto.getMenuItemId()));
+                .orElseThrow(() -> new MenuItemNotFoundException("MenuItem bulunamadı: " + orderItemDto.getMenuItemId()));
 
         orderItem.setMenuitem(menuItem);
 
         // Aynı şekilde Order için de
         Order order = orderRepository.findById(orderItemDto.getOrderId())
-                .orElseThrow(() -> new RuntimeException("Order bulunamadı: " + orderItemDto.getOrderId()));
+                .orElseThrow(() -> new OrderNotFoundException("Order bulunamadı: " + orderItemDto.getOrderId()));
 
         orderItem.setOrder(order);
 
@@ -67,7 +70,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public OrderItemDto updateOrderItem(Long id, OrderItemDto orderItemDto) {
         OrderItem existingOrderItem = orderItemRepository.findById(orderItemDto.getId())
-                .orElseThrow(() -> new RuntimeException("OrderItem not found with id: " + orderItemDto.getId()));
+                .orElseThrow(() -> new OrderItemNotFoundException("OrderItem not found with id: " + orderItemDto.getId()));
 
         existingOrderItem.setQuantity(orderItemDto.getQuantity());
         existingOrderItem.setPrice(orderItemDto.getPrice());
@@ -80,7 +83,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public void deleteOrderItem(Long id) {
         OrderItem existingOrderItem = orderItemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("OrderItem not found with id: " + id));
+                .orElseThrow(() -> new OrderItemNotFoundException("OrderItem not found with id: " + id));
         orderItemRepository.delete(existingOrderItem);
 
     }

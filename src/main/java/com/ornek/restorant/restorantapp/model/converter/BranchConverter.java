@@ -26,8 +26,7 @@ public class BranchConverter {
         branch.setId(dto.getId());
         branch.setName(dto.getName());
 
-        Restaurant restaurant = new Restaurant();
-        restaurant.setId(dto.getRestaurantId());
+
         return branch;
     }
 

@@ -35,7 +35,7 @@ public class Restaurant extends BaseEntity {
 
 
 
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(mappedBy = "restaurant",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Branch> branches;
 
 }

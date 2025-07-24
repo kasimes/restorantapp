@@ -32,8 +32,8 @@ public class BranchController {
         return branchService.saveBranch(branchDto);
     }
     @PutMapping("/{id}")
-    public BranchDto updateBranch(@RequestBody BranchDto branchDto) {
-        return branchService.saveBranch(branchDto);
+    public BranchDto updateBranch( @PathVariable Long id,@RequestBody BranchDto branchDto) {
+        return branchService.updateBranch(id,branchDto);
     }
     @DeleteMapping
     public ResponseEntity<Void> deleteBranch(@RequestBody Long branchId) {

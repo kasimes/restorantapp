@@ -1,7 +1,7 @@
 package com.ornek.restorant.restorantapp.service.ServiceImpl;
 
-import com.ornek.restorant.restorantapp.exception.MenuNotFoundException;
-import com.ornek.restorant.restorantapp.exception.RestaurantNotFoundException;
+import com.ornek.restorant.restorantapp.exception.notfound.MenuNotFoundException;
+import com.ornek.restorant.restorantapp.exception.notfound.RestaurantNotFoundException;
 import com.ornek.restorant.restorantapp.model.converter.MenuConverter;
 import com.ornek.restorant.restorantapp.model.dto.MenuDto;
 import com.ornek.restorant.restorantapp.model.entity.Menu;

@@ -1,14 +1,13 @@
 package com.ornek.restorant.restorantapp.service.ServiceImpl;
 
-import com.ornek.restorant.restorantapp.exception.BranchNotFoundException;
-import com.ornek.restorant.restorantapp.exception.CustomerNotFoundException;
-import com.ornek.restorant.restorantapp.exception.OrderNotFoundException;
+import com.ornek.restorant.restorantapp.exception.notfound.BranchNotFoundException;
+import com.ornek.restorant.restorantapp.exception.notfound.CustomerNotFoundException;
+import com.ornek.restorant.restorantapp.exception.notfound.OrderNotFoundException;
 import com.ornek.restorant.restorantapp.model.converter.OrderConverter;
 import com.ornek.restorant.restorantapp.model.dto.OrderDto;
 import com.ornek.restorant.restorantapp.model.entity.Branch;
 import com.ornek.restorant.restorantapp.model.entity.Users;
 import com.ornek.restorant.restorantapp.model.entity.Order;
-import com.ornek.restorant.restorantapp.model.entity.Restaurant;
 import com.ornek.restorant.restorantapp.repository.BranchRepository;
 import com.ornek.restorant.restorantapp.repository.UsersRepository;
 import com.ornek.restorant.restorantapp.repository.OrderRepository;

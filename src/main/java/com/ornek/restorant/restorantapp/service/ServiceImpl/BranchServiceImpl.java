@@ -1,6 +1,6 @@
 package com.ornek.restorant.restorantapp.service.ServiceImpl;
 
-import com.ornek.restorant.restorantapp.exception.BranchNotFoundException;
+import com.ornek.restorant.restorantapp.exception.notfound.BranchNotFoundException;
 import com.ornek.restorant.restorantapp.model.converter.BranchConverter;
 import com.ornek.restorant.restorantapp.model.dto.BranchDto;
 import com.ornek.restorant.restorantapp.model.entity.Branch;

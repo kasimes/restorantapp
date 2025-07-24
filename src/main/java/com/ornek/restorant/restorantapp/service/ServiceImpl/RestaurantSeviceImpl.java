@@ -1,6 +1,6 @@
 package com.ornek.restorant.restorantapp.service.ServiceImpl;
 
-import com.ornek.restorant.restorantapp.exception.RestaurantNotFoundException;
+import com.ornek.restorant.restorantapp.exception.notfound.RestaurantNotFoundException;
 import com.ornek.restorant.restorantapp.model.dto.RestaurantDto;
 import com.ornek.restorant.restorantapp.model.entity.Restaurant;
 import com.ornek.restorant.restorantapp.repository.RestaurantRepository;

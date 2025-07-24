@@ -1,6 +1,6 @@
 package com.ornek.restorant.restorantapp.service.ServiceImpl;
 
-import com.ornek.restorant.restorantapp.exception.CustomerNotFoundException;
+import com.ornek.restorant.restorantapp.exception.notfound.CustomerNotFoundException;
 import com.ornek.restorant.restorantapp.model.converter.UsersConverter;
 import com.ornek.restorant.restorantapp.model.dto.UsersDto;
 import com.ornek.restorant.restorantapp.model.entity.Users;

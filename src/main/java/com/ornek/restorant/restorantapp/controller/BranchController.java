@@ -35,9 +35,9 @@ public class BranchController {
     public BranchDto updateBranch( @PathVariable Long id,@RequestBody BranchDto branchDto) {
         return branchService.updateBranch(id,branchDto);
     }
-    @DeleteMapping
-    public ResponseEntity<Void> deleteBranch(@RequestBody Long branchId) {
-        branchService.deleteBranch(branchId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBranch(@PathVariable Long id) {
+        branchService.deleteBranch(id);
         return ResponseEntity.noContent().build();
     }
 

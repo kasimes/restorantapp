@@ -1,5 +1,6 @@
 package com.ornek.restorant.restorantapp.model.dto;
 
+import com.ornek.restorant.restorantapp.model.enums.AvailabilityStatus;
 import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
 
@@ -13,8 +14,8 @@ public class MenuItemDto {
     private double price;
     private String category;
     private boolean isAvailable;
-    @NotNull
+
     private Long menuId;
-    private String availabilityStatus;
+    private AvailabilityStatus availabilityStatus;
 
 }

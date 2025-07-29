@@ -21,7 +21,7 @@ public class MenuItemConverter {
         if (entity.getMenu() != null) {
             dto.setMenuId(entity.getMenu().getId());
         }
-        dto.setAvailabilityStatus(entity.getAvailabilityStatus() != null ? entity.getAvailabilityStatus().name() : null);
+        dto.setAvailabilityStatus(entity.getAvailabilityStatus() != null ? entity.getAvailabilityStatus() : null);
         return dto;
     }
 
@@ -37,7 +37,7 @@ public class MenuItemConverter {
         entity.setAvailable(dto.isAvailable());
         entity.setMenu(menu);
         if (dto.getAvailabilityStatus() != null) {
-            entity.setAvailabilityStatus(Enum.valueOf(com.ornek.restorant.restorantapp.model.enums.AvailabilityStatus.class, dto.getAvailabilityStatus()));
+            entity.setAvailabilityStatus(dto.getAvailabilityStatus());
         }
         return entity;
     }

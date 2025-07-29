@@ -56,7 +56,7 @@ public class MenuItemServiceImpl implements MenuItemService {
 
         menuItem.setAvailabilityStatus(
                 menuItemDto.getAvailabilityStatus() != null
-                        ? AvailabilityStatus.valueOf(menuItemDto.getAvailabilityStatus())
+                        ? (menuItemDto.getAvailabilityStatus())
                         : AvailabilityStatus.AVAILABLE
         );
         MenuItem savedMenuItem = menuItemRepository.save(menuItem);

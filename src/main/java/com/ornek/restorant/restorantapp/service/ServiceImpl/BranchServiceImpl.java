@@ -9,6 +9,8 @@ import com.ornek.restorant.restorantapp.repository.BranchRepository;
 import com.ornek.restorant.restorantapp.repository.RestaurantRepository;
 import com.ornek.restorant.restorantapp.service.BranchService;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class BranchServiceImpl implements BranchService{
     }
 
     @Override
+    @Cacheable(value = "brancheCache")//veriler cache de tutulur
     public List<BranchDto> getAllBranches(){
         List<Branch> branches = branchRepository.findAll();
         return branches.stream()
@@ -34,6 +37,7 @@ public class BranchServiceImpl implements BranchService{
     }
 
     @Override
+    @Cacheable(value = "brancheCache",key = "#branchId")//ıd ye gore cache alırnı
     public BranchDto getBranchById(Long branchId) {
         Branch branch = branchRepository.findById(branchId)
                 .orElseThrow(() -> new BranchNotFoundException("Branch not found with id: " + branchId));
@@ -41,6 +45,7 @@ public class BranchServiceImpl implements BranchService{
     }
 
     @Override
+    @CacheEvict(value = "brancheCache",allEntries = true)//guncellme yapılır
     public BranchDto saveBranch(BranchDto branchDto) {
         var restaurant = restaurantRepository.findById(branchDto.getRestaurantId())
                 .orElseThrow(()-> new RestaurantNotFoundException(
@@ -54,6 +59,7 @@ public class BranchServiceImpl implements BranchService{
     }
 
     @Override
+    @CacheEvict(value = "brancheCache",allEntries = true)//guncellme yapılır
     public BranchDto updateBranch(Long branchId, BranchDto branchDto) {
         Branch existingBranch = branchRepository.findById(branchId)
                 .orElseThrow(() -> new BranchNotFoundException("Branch not found with id: " + branchId));
@@ -66,6 +72,7 @@ public class BranchServiceImpl implements BranchService{
     }
 
     @Override
+    @CacheEvict(value = "BrancheCache",allEntries = true)//guncellme yapılır
     public void deleteBranch(Long branchId) {
         branchRepository.deleteById(branchId);
 

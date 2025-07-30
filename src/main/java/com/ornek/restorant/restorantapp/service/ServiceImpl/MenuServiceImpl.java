@@ -9,6 +9,8 @@ import com.ornek.restorant.restorantapp.model.entity.Restaurant;
 import com.ornek.restorant.restorantapp.repository.MenuRepository;
 import com.ornek.restorant.restorantapp.repository.RestaurantRepository;
 import com.ornek.restorant.restorantapp.service.MenuService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class MenuServiceImpl implements MenuService {
         this.restaurantRepository = restaurantRepository;
     }
     @Override
+    @Cacheable(value = "menusCache")
     public List<MenuDto> getAllMenus()
     {
         return menuRepository.findAll().stream()
@@ -31,6 +34,7 @@ public class MenuServiceImpl implements MenuService {
                 .collect(Collectors.toList());
     }
     @Override
+    @Cacheable(value = "menusCache", key = "#id")
     public MenuDto getMenuById(Long id){
         Menu menu = menuRepository.findById(id)
                 .orElseThrow(()-> new RuntimeException("Menu Not Found" + id));
@@ -38,6 +42,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @CacheEvict(value = "menusCache", allEntries = true)
     public MenuDto createMenu(MenuDto menuDto) {
         Restaurant restaurant = restaurantRepository.findById(menuDto.getRestaurantId())
                 .orElseThrow(()-> new RuntimeException("Restaurant Not Found" + menuDto.getRestaurantId()));
@@ -49,6 +54,7 @@ public class MenuServiceImpl implements MenuService {
         return MenuConverter.toDto(savedMenu);
     }
     @Override
+    @CacheEvict(value = "menusCache", allEntries = true)
     public MenuDto updateMenu(MenuDto menuDto) {
         Menu menu = menuRepository.findById(menuDto.getId())
                 .orElseThrow(() -> new MenuNotFoundException("Menu not found with id: " + menuDto.getId()));
@@ -64,6 +70,7 @@ public class MenuServiceImpl implements MenuService {
         return MenuConverter.toDto(updatedMenu);
     }
     @Override
+    @CacheEvict(value = "menusCache", allEntries = true)//tüm menuler temizlenir
     public void deleteMenu(Long id) {
         Menu menu = menuRepository.findById(id)
                 .orElseThrow(() -> new MenuNotFoundException("Menu not found with id: " + id));

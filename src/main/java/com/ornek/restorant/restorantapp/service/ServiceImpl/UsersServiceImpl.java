@@ -7,6 +7,8 @@ import com.ornek.restorant.restorantapp.model.entity.Users;
 import com.ornek.restorant.restorantapp.repository.UsersRepository;
 import com.ornek.restorant.restorantapp.service.UsersService;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    @Cacheable(value = {"usersCache"})//bu method ıle cache kaydedilir veriler
     public List<UsersDto> getCustomers() {
         List<Users> users = usersRepository.findAll();
         return users.stream()
@@ -34,6 +37,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    @Cacheable(value = "usersCache ",key ="#id")//burada id bazlı cache işlemi yapılır
     public UsersDto getCustomerById(long id) {
         Users users = usersRepository.findById(id)
                 .orElseThrow(()-> new CustomerNotFoundException("Customer not found with id: " + id));
@@ -41,6 +45,7 @@ public class UsersServiceImpl implements UsersService {
 
     }
     @Override
+    @CacheEvict(value = "usersCache",allEntries = true)//yeni kullanıcı olusturuldugunda tum kayıtlar temizlenir ve eski veriler kalmaz
     public UsersDto createCustomer(UsersDto usersDto) {
         Users users = UsersConverter.toEntity(usersDto);
         Users savedUsers = usersRepository.save(users);
@@ -48,6 +53,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    @CacheEvict(value = {"usersChace"},allEntries = true)//cache temizlenir eski veiler kalmaz
     public UsersDto updateCustomer(long id, UsersDto usersDto) {
         Users existingUsers = usersRepository.findById(id)
                 .orElseThrow(()-> new CustomerNotFoundException("Customer not found with id: " + id));
@@ -62,6 +68,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    @CacheEvict(  value = "usersCache",allEntries = true)//tüm veriler temizlenir
     public void deleteCustomer(long id) {
         Users existingUsers = usersRepository.findById(id)
                 .orElseThrow(()-> new CustomerNotFoundException("Customer not found with id: " + id));

@@ -20,8 +20,16 @@ public class Users extends BaseEntity {
     private String email;
     private String phoneNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "address_id")  // FK oluşturur
+    private Address address;
+
     @Enumerated(EnumType.STRING)
     private Role role;
+
+
+    @Column(nullable = false)
+    private String password;
 
 
 }

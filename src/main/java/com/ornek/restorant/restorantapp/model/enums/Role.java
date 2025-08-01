@@ -5,5 +5,6 @@ public enum Role {
     MUSTERİ,
     YONETİCİ,
     KASİYER,
-    ASCI
+    ASCI,
+    ADMIN
 }

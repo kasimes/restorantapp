@@ -1,5 +1,6 @@
 package com.ornek.restorant.restorantapp.model.converter;
 
+import com.ornek.restorant.restorantapp.model.entity.Address;
 import com.ornek.restorant.restorantapp.model.entity.Users;
 import com.ornek.restorant.restorantapp.model.dto.UsersDto;
 import org.springframework.stereotype.Component;
@@ -16,10 +17,19 @@ public class UsersConverter {
         dto.setLastName(users.getLastName());
         dto.setEmail(users.getEmail());
         dto.setPhoneNumber(users.getPhoneNumber());
+
+
+        if (users.getAddress() != null) {
+            dto.setCity(users.getAddress().getCity());
+            dto.setDistrict(users.getAddress().getDistrict());
+            dto.setFullAddress(users.getAddress().getFullAddress());
+            dto.setLatitude(users.getAddress().getLatitude());
+            dto.setLongitude(users.getAddress().getLongitude());
+        }
         return dto;
     }
 
-    public static Users toEntity(UsersDto usersDto)
+    public static Users toEntity(UsersDto usersDto , Address address)
     {
         if (usersDto == null) return null;
         Users entity = new Users();
@@ -28,6 +38,7 @@ public class UsersConverter {
         entity.setLastName(usersDto.getLastName());
         entity.setEmail(usersDto.getEmail());
         entity.setPhoneNumber(usersDto.getPhoneNumber());
+        entity.setAddress(address); // dışarıdan sağlanan Address entity
         return entity;
     }
 

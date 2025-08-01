@@ -14,7 +14,6 @@ public class MenuItemDto {
     private double price;
     private String category;
     private boolean isAvailable;
-
     private Long menuId;
     private AvailabilityStatus availabilityStatus;
 

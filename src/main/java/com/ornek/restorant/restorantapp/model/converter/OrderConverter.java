@@ -4,7 +4,7 @@ import com.ornek.restorant.restorantapp.model.dto.OrderDto;
 import com.ornek.restorant.restorantapp.model.entity.Branch;
 import com.ornek.restorant.restorantapp.model.entity.Users;
 import com.ornek.restorant.restorantapp.model.entity.Order;
-import com.ornek.restorant.restorantapp.model.entity.Restaurant;
+
 import com.ornek.restorant.restorantapp.model.enums.OrderStatus;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +21,7 @@ public class OrderConverter {
         dto.setOrderStatus(OrderStatus.valueOf(entity.getOrderStatus().name()));
         dto.setOrderTime(entity.getOrderTime());
         dto.setTotalPrice(entity.getTotalPrice());
+
         return dto;
     }
 

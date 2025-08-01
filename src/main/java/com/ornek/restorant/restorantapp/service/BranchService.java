@@ -6,6 +6,7 @@ import com.ornek.restorant.restorantapp.model.entity.Branch;
 import java.util.List;
 
 public interface BranchService {
+    List<BranchDto> getNearbyBranches(double latitude, double longitude, double radiusKM);
     List<BranchDto> getAllBranches();
     BranchDto getBranchById(Long branchId);
     BranchDto saveBranch(BranchDto branchDto);

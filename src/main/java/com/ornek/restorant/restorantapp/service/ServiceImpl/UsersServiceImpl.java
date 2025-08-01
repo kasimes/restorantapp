@@ -1,9 +1,12 @@
 package com.ornek.restorant.restorantapp.service.ServiceImpl;
 
 import com.ornek.restorant.restorantapp.exception.notfound.CustomerNotFoundException;
+import com.ornek.restorant.restorantapp.exception.notfound.NotFoundException;
 import com.ornek.restorant.restorantapp.model.converter.UsersConverter;
 import com.ornek.restorant.restorantapp.model.dto.UsersDto;
+import com.ornek.restorant.restorantapp.model.entity.Address;
 import com.ornek.restorant.restorantapp.model.entity.Users;
+import com.ornek.restorant.restorantapp.repository.AddressRepository;
 import com.ornek.restorant.restorantapp.repository.UsersRepository;
 import com.ornek.restorant.restorantapp.service.UsersService;
 
@@ -21,10 +24,12 @@ public class UsersServiceImpl implements UsersService {
 
     private final UsersRepository usersRepository;
     private final UsersConverter usersConverter;
-    
-    public UsersServiceImpl(UsersRepository usersRepository, UsersConverter usersConverter) {
+    private final AddressRepository addressRepository;
+
+    public UsersServiceImpl(UsersRepository usersRepository, UsersConverter usersConverter, AddressRepository addressRepository) {
         this.usersRepository = usersRepository;
         this.usersConverter = usersConverter;
+        this.addressRepository = addressRepository;
     }
 
     @Override
@@ -47,7 +52,10 @@ public class UsersServiceImpl implements UsersService {
     @Override
     @CacheEvict(value = "usersCache",allEntries = true)//yeni kullanıcı olusturuldugunda tum kayıtlar temizlenir ve eski veriler kalmaz
     public UsersDto createCustomer(UsersDto usersDto) {
-        Users users = UsersConverter.toEntity(usersDto);
+        Address address = addressRepository.findById(usersDto.getAddressId())
+                .orElseThrow(() -> new NotFoundException("Address not found with id: " + usersDto.getAddressId()));
+
+        Users users = UsersConverter.toEntity(usersDto,address);
         Users savedUsers = usersRepository.save(users);
         return usersConverter.toDto(savedUsers);
     }

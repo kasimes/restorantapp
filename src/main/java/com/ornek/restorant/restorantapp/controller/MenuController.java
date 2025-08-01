@@ -4,6 +4,7 @@ package com.ornek.restorant.restorantapp.controller;
 import com.ornek.restorant.restorantapp.model.dto.MenuDto;
 import com.ornek.restorant.restorantapp.service.MenuService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,23 +19,27 @@ public class MenuController {
         this.menuService = menuService;
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping
     public ResponseEntity<List<MenuDto>> getAllMenus() {
         List<MenuDto> menus = menuService.getAllMenus();
         return  ResponseEntity.ok(menus);
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<MenuDto> getMenuById(@PathVariable Long id) {
         MenuDto menuDto = menuService.getMenuById(id);
         return  ResponseEntity.ok(menuDto);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<MenuDto> createMenu(@RequestBody MenuDto menuDto) {
         MenuDto createdMenuDto = menuService.createMenu(menuDto);
         return  ResponseEntity.ok(createdMenuDto);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<MenuDto> updateMenu(@PathVariable Long id ,@RequestBody MenuDto menuDto) {
         menuDto.setId(id);
@@ -42,6 +47,7 @@ public class MenuController {
         return  ResponseEntity.ok(updatedMenuDto);
 
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<MenuDto> deleteMenu(@PathVariable Long id) {
         menuService.deleteMenu(id);

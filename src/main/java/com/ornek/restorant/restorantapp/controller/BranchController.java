@@ -25,7 +25,7 @@ public class BranchController {
         return branchService.getAllBranches();
     }
 
-    @GetMapping("/{brancId}")
+    @GetMapping("/{branchId}")
     @PreAuthorize("hasRole('ADMIN')")
     public BranchDto getBranchById(@PathVariable Long branchId) {
         return branchService.getBranchById(branchId);

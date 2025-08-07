@@ -44,7 +44,7 @@ public class OrderController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<OrderDto> deleteOrder(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
         orderService.deleteOrderById(id);
         return ResponseEntity.ok().build();
     }

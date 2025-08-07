@@ -24,31 +24,31 @@ public class CustomerControl {
 
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<UsersDto>> getAllCustomers() {
         return ResponseEntity.ok(usersService.getCustomers());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<UsersDto> getCustomerById(@PathVariable long id) {
         return ResponseEntity.ok(usersService.getCustomerById(id));
 
     }
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<UsersDto> createCustomer(@RequestBody UsersDto usersDto) {
         return ResponseEntity.ok(usersService.createCustomer(usersDto));
     }
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<UsersDto> updateCustomer(@RequestBody UsersDto usersDto, @PathVariable long id) {
         return ResponseEntity.ok(usersService.updateCustomer(id, usersDto));
     }
     @DeleteMapping("{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UsersDto> deleteCustomer(@PathVariable long id) {
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable long id) {
         usersService.deleteCustomer(id);
         return ResponseEntity.ok().build();
     }

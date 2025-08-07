@@ -12,6 +12,7 @@ import com.ornek.restorant.restorantapp.service.UsersService;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +23,13 @@ import java.util.stream.Collectors;
 @Transactional
 public class UsersServiceImpl implements UsersService {
 
+    private final PasswordEncoder passwordEncoder;
     private final UsersRepository usersRepository;
     private final UsersConverter usersConverter;
     private final AddressRepository addressRepository;
 
-    public UsersServiceImpl(UsersRepository usersRepository, UsersConverter usersConverter, AddressRepository addressRepository) {
+    public UsersServiceImpl(PasswordEncoder passwordEncoder, UsersRepository usersRepository, UsersConverter usersConverter, AddressRepository addressRepository) {
+        this.passwordEncoder = passwordEncoder;
         this.usersRepository = usersRepository;
         this.usersConverter = usersConverter;
         this.addressRepository = addressRepository;
@@ -42,7 +45,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    @Cacheable(value = "usersCache ",key ="#id")//burada id bazlı cache işlemi yapılır
+    @Cacheable(value = "usersCache",key ="#id")//burada id bazlı cache işlemi yapılır
     public UsersDto getCustomerById(long id) {
         Users users = usersRepository.findById(id)
                 .orElseThrow(()-> new CustomerNotFoundException("Customer not found with id: " + id));
@@ -56,12 +59,14 @@ public class UsersServiceImpl implements UsersService {
                 .orElseThrow(() -> new NotFoundException("Address not found with id: " + usersDto.getAddressId()));
 
         Users users = UsersConverter.toEntity(usersDto,address);
+        users.setPassword(passwordEncoder.encode(usersDto.getPassword()));
         Users savedUsers = usersRepository.save(users);
         return usersConverter.toDto(savedUsers);
+
     }
 
     @Override
-    @CacheEvict(value = {"usersChace"},allEntries = true)//cache temizlenir eski veiler kalmaz
+    @CacheEvict(value = {"usersCache"},allEntries = true)//cache temizlenir eski veiler kalmaz
     public UsersDto updateCustomer(long id, UsersDto usersDto) {
         Users existingUsers = usersRepository.findById(id)
                 .orElseThrow(()-> new CustomerNotFoundException("Customer not found with id: " + id));
@@ -70,8 +75,21 @@ public class UsersServiceImpl implements UsersService {
         existingUsers.setLastName(usersDto.getLastName());
         existingUsers.setEmail(usersDto.getEmail());
         existingUsers.setPhoneNumber(usersDto.getPhoneNumber());
+
+
+
+        //burada role null olamaz
+        if(usersDto.getRole()!=null) {
+            existingUsers.setRole(usersDto.getRole());
+        }
+        //şifre degistirilir
+        if(usersDto.getPassword()!=null) {
+            existingUsers.setPassword(passwordEncoder.encode(usersDto.getPassword()));
+        }
+
         Users updatedUsers = usersRepository.save(existingUsers);
         return usersConverter.toDto(updatedUsers);
+
 
     }
 

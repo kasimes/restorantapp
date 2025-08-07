@@ -1,5 +1,6 @@
 package com.ornek.restorant.restorantapp.model.dto;
 
+import com.ornek.restorant.restorantapp.model.enums.Role;
 import lombok.*;
 
 
@@ -15,5 +16,7 @@ public class UsersDto {
     private String fullAddress; // Address.fullAddress
     private Double latitude;
     private Double longitude;
-    private Long addressId;// Address'tan alınacak
+    private Long addressId;
+    private String password;
+    private Role role;
 }

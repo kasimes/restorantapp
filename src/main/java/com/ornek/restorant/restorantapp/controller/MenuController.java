@@ -40,7 +40,7 @@ public class MenuController {
         return  ResponseEntity.ok(createdMenuDto);
     }
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<MenuDto> updateMenu(@PathVariable Long id ,@RequestBody MenuDto menuDto) {
         menuDto.setId(id);
         MenuDto updatedMenuDto = menuService.updateMenu(menuDto);
@@ -49,7 +49,7 @@ public class MenuController {
     }
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<MenuDto> deleteMenu(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteMenu(@PathVariable Long id) {
         menuService.deleteMenu(id);
         return  ResponseEntity.noContent().build();
     }

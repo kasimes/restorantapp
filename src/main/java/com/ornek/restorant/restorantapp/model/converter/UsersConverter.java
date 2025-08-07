@@ -17,6 +17,8 @@ public class UsersConverter {
         dto.setLastName(users.getLastName());
         dto.setEmail(users.getEmail());
         dto.setPhoneNumber(users.getPhoneNumber());
+        dto.setRole(users.getRole());
+
 
 
         if (users.getAddress() != null) {
@@ -38,7 +40,9 @@ public class UsersConverter {
         entity.setLastName(usersDto.getLastName());
         entity.setEmail(usersDto.getEmail());
         entity.setPhoneNumber(usersDto.getPhoneNumber());
-        entity.setAddress(address); // dışarıdan sağlanan Address entity
+        entity.setAddress(address);
+        entity.setPassword(usersDto.getPassword());
+        entity.setRole(usersDto.getRole());// dışarıdan sağlanan Address entity
         return entity;
     }
 

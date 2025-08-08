@@ -1,10 +1,13 @@
 package com.ornek.restorant.restorantapp.security;
 
+import com.ornek.restorant.restorantapp.model.entity.Users;
+import com.ornek.restorant.restorantapp.repository.UsersRepository;
 import io.jsonwebtoken.*;
 import org.springframework.security.core.Authentication;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -12,13 +15,18 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-   //JWT olusturulurken kullanılacak gizli anahtar
+    private final UsersRepository usersRepository;
+    //JWT olusturulurken kullanılacak gizli anahtar
     @Value("${app.jwt-secret}")
     private String jwtSecret;
 
     //jwt gecerlilik suresi
     @Value("${app.jwt-expiration-ms}")
     private long jwtExpirationMs;
+
+    public JwtTokenProvider(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+    }
 
     //giriş yapan kullanıcıya token uretme
 
@@ -27,6 +35,8 @@ public class JwtTokenProvider {
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
         String username = userPrincipal.getUsername();
 
+        Users user = usersRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("kullanıcı bulunamadı"));
 
 
         Date now = new Date();
@@ -34,6 +44,7 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
                 .setSubject(username)
+                .claim("role",user.getRole().name())
                 .setIssuer(String.valueOf(now))
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret) // İmza algoritması ve gizli anahtar

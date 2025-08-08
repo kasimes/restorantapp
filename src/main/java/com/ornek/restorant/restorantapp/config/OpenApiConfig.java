@@ -1,7 +1,6 @@
 package com.ornek.restorant.restorantapp.config;
 
 
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -21,16 +20,16 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("RESTORANT UYGULAMASI API")
-                        .version("1.0.0")
+                        .version("1.0")
                         .description("JWT ile korunan REST API dokümantasyonu"))
-                .addSecurityItem(new SecurityRequirement().addList(securityScheme ))
+                .addSecurityItem(new SecurityRequirement().addList(securityScheme))
                 .components(new Components()
                         .addSecuritySchemes(securityScheme,
                                 new SecurityScheme()
-                                    .name(securityScheme)
-                                    .type(SecurityScheme.Type.HTTP)
-                                    .scheme("bearer")
-                                    .bearerFormat("JWT")
+                                        .name(securityScheme)
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")
                         )
                 );
 

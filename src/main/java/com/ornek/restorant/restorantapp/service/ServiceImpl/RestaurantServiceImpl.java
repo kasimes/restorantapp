@@ -24,7 +24,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    @Cacheable(value = "allRestaurants")
+    @Cacheable(value = "restaurantsCache")
     public List<RestaurantDto> getAllRestaurants() {
 
         return restaurantRepository.findAll()
@@ -33,7 +33,7 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .collect(Collectors.toList());
     }
     @Override
-    @Cacheable(value = "restaurants",key="#id")
+    @Cacheable(value = "restaurantsCache",key="#id")
     public RestaurantDto getRestaurantById(Long id) {
         Restaurant  restaurant = restaurantRepository.findById(id)
                 .orElseThrow(()-> new RestaurantNotFoundException("Restaurant not found"));
@@ -42,7 +42,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    @CacheEvict(value = {"restaurants","allRestaurants"},allEntries = true)
+    @CacheEvict(value = {"restaurantsCache"},allEntries = true)
     public RestaurantDto createRestaurant(RestaurantDto restaurantDto) {
         Restaurant restaurant = RestaurantConverter.toEntity(restaurantDto);
         Restaurant saved = restaurantRepository.save(restaurant);
@@ -50,7 +50,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    @CacheEvict(value = {"restaurants","allRestaurants"},allEntries = true,key = "#id")
+    @CacheEvict(value = {"restaurantsCache"},allEntries = true,key = "#id")
     public RestaurantDto updateRestaurant(Long id, RestaurantDto restaurantDto) {
 
         Restaurant existing = restaurantRepository.findById(id)
@@ -64,7 +64,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     }
     @Override
-    @CacheEvict(value = {"restaurants","allRestaurants"},allEntries = true,key = "#id")
+    @CacheEvict(value = {"restaurantsCache"},allEntries = true,key = "#id")
     public void deleteRestaurant(Long id) {
         Restaurant restaurant = restaurantRepository.findById(id)
                 .orElseThrow(()-> new RestaurantNotFoundException("Restaurant not found" + id));

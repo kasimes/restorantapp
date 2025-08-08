@@ -64,8 +64,14 @@ public class AuthController {
         Users user = new Users();
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setRole(Role.USER);
 
+        if(registerRequest.getRole() !=null) {
+            user.setRole(registerRequest.getRole());
+        }
+        else
+        {
+            user.setRole(Role.USER);//burda seçmezse eger defult user koyuyor
+        }
         usersRepository.save(user);
 
         return ResponseEntity.ok("Kayıt Başarılı");

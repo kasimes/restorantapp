@@ -2,18 +2,17 @@ package com.ornek.restorant.restorantapp.service.ServiceImpl;
 
 import com.ornek.restorant.restorantapp.exception.notfound.BranchNotFoundException;
 import com.ornek.restorant.restorantapp.exception.notfound.RestaurantNotFoundException;
+import com.ornek.restorant.restorantapp.model.converter.AddressConverter;
 import com.ornek.restorant.restorantapp.model.converter.BranchConverter;
 import com.ornek.restorant.restorantapp.model.dto.BranchDto;
-import com.ornek.restorant.restorantapp.model.entity.Address;
 import com.ornek.restorant.restorantapp.model.entity.Branch;
-import com.ornek.restorant.restorantapp.repository.AddressRepository;
 import com.ornek.restorant.restorantapp.repository.BranchRepository;
 import com.ornek.restorant.restorantapp.repository.RestaurantRepository;
 import com.ornek.restorant.restorantapp.service.BranchService;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.repository.CrudRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,13 +22,13 @@ public class BranchServiceImpl implements BranchService{
     private final BranchRepository branchRepository;
     private final RestaurantRepository restaurantRepository;
     private final BranchConverter branchConverter ;
-    private final AddressRepository  addressRepository;
 
-    public BranchServiceImpl(BranchRepository branchRepository, RestaurantRepository restaurantRepository, BranchConverter branchConverter, AddressRepository addressRepository) {
+
+    public BranchServiceImpl(BranchRepository branchRepository, RestaurantRepository restaurantRepository, BranchConverter branchConverter) {
         this.branchRepository = branchRepository;
         this.restaurantRepository = restaurantRepository;
         this.branchConverter = branchConverter;
-        this.addressRepository = addressRepository;
+
     }
 
     @Override
@@ -65,10 +64,10 @@ public class BranchServiceImpl implements BranchService{
                         "Restaurant not found with id: " + branchDto.getRestaurantId()
                 ));
 
-        Address address = addressRepository.findById(branchDto.getAddressId())
-                .orElseThrow(()-> new RuntimeException("Address not found with id: " + branchDto.getAddressId()));
-        Branch branch = BranchConverter.toEntity(branchDto , address);
 
+        var address = AddressConverter.toEntity(branchDto.getAddressDTO());
+
+        Branch branch = BranchConverter.toEntity(branchDto , address);
         branch.setRestaurant(restaurant);
         Branch savedBranch = branchRepository.save(branch);
         return branchConverter.toDto(savedBranch);
@@ -81,7 +80,10 @@ public class BranchServiceImpl implements BranchService{
                 .orElseThrow(() -> new BranchNotFoundException("Branch not found with id: " + branchId));
 
         existingBranch.setName(branchDto.getName());
-        // Restaurant güncellemesi gerekiyorsa buraya ekle
+
+        if (branchDto.getAddressDTO() != null) {
+            existingBranch.setAddress(AddressConverter.toEntity(branchDto.getAddressDTO()));
+        }
 
         Branch updatedBranch = branchRepository.save(existingBranch);
         return branchConverter.toDto(updatedBranch);

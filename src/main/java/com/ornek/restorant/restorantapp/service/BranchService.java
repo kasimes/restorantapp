@@ -1,7 +1,7 @@
 package com.ornek.restorant.restorantapp.service;
 
 import com.ornek.restorant.restorantapp.model.dto.BranchDto;
-import com.ornek.restorant.restorantapp.model.entity.Branch;
+
 
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package com.ornek.restorant.restorantapp.model.converter;
 
-import com.ornek.restorant.restorantapp.model.entity.Address;
 import com.ornek.restorant.restorantapp.model.entity.Users;
 import com.ornek.restorant.restorantapp.model.dto.UsersDto;
 import org.springframework.stereotype.Component;
@@ -9,41 +8,45 @@ import org.springframework.stereotype.Component;
 @Component
 public class UsersConverter {
 
-    public UsersDto toDto(Users users)
-    {
-        UsersDto dto = new UsersDto();
-        dto.setId(users.getId());
-        dto.setFirstName(users.getFirstName());
-        dto.setLastName(users.getLastName());
-        dto.setEmail(users.getEmail());
-        dto.setPhoneNumber(users.getPhoneNumber());
-        dto.setRole(users.getRole());
+    // DTO → Entity
+    public static Users toEntity(UsersDto dto) {
+        if (dto == null) return null;
 
+        Users users = new Users();
+        users.setId(dto.getId());
+        users.setFirstName(dto.getFirstName());
+        users.setLastName(dto.getLastName());
+        users.setEmail(dto.getEmail());
+        users.setPhoneNumber(dto.getPhoneNumber());
+        users.setPassword(dto.getPassword());
+        users.setRole(dto.getRole());
 
-
-        if (users.getAddress() != null) {
-            dto.setCity(users.getAddress().getCity());
-            dto.setDistrict(users.getAddress().getDistrict());
-            dto.setFullAddress(users.getAddress().getFullAddress());
-            dto.setLatitude(users.getAddress().getLatitude());
-            dto.setLongitude(users.getAddress().getLongitude());
+        // Address dönüştürme ayrı converter ile
+        if (dto.getAddressDTO() != null) {
+            users.setAddress(AddressConverter.toEntity(dto.getAddressDTO()));
         }
-        return dto;
+
+        return users;
     }
 
-    public static Users toEntity(UsersDto usersDto , Address address)
-    {
-        if (usersDto == null) return null;
-        Users entity = new Users();
-        entity.setId(usersDto.getId());
-        entity.setFirstName(usersDto.getFirstName());
-        entity.setLastName(usersDto.getLastName());
-        entity.setEmail(usersDto.getEmail());
-        entity.setPhoneNumber(usersDto.getPhoneNumber());
-        entity.setAddress(address);
-        entity.setPassword(usersDto.getPassword());
-        entity.setRole(usersDto.getRole());// dışarıdan sağlanan Address entity
-        return entity;
+    // Entity → DTO
+    public UsersDto toDto(Users entity) {
+        if (entity == null) return null;
+
+        UsersDto dto = new UsersDto();
+        dto.setId(entity.getId());
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setEmail(entity.getEmail());
+        dto.setPhoneNumber(entity.getPhoneNumber());
+        dto.setPassword(entity.getPassword());
+        dto.setRole(entity.getRole());
+
+        if (entity.getAddress() != null) {
+            dto.setAddressDTO(AddressConverter.toDto(entity.getAddress()));
+        }
+
+        return dto;
     }
 
 }

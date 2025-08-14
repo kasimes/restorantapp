@@ -1,5 +1,6 @@
 package com.ornek.restorant.restorantapp.model.converter;
 
+import com.ornek.restorant.restorantapp.model.dto.AdressDTO;
 import com.ornek.restorant.restorantapp.model.dto.BranchDto;
 import com.ornek.restorant.restorantapp.model.entity.Address;
 import com.ornek.restorant.restorantapp.model.entity.Branch;
@@ -23,12 +24,16 @@ public class BranchConverter {
         dto.setOpeningTime(branch.getOpeningTime()!=null?branch.getOpeningTime().toString():null);
         dto.setClosingTime(branch.getClosingTime()!=null?branch.getClosingTime().toString():null);
 
+
         if (branch.getAddress() != null) {
-            dto.setCity(branch.getAddress().getCity());
-            dto.setDistrict(branch.getAddress().getDistrict());
-            dto.setFullAddress(branch.getAddress().getFullAddress());
-            dto.setLatitude(branch.getAddress().getLatitude());
-            dto.setLongitude(branch.getAddress().getLongitude());
+            AdressDTO addressDTO = new AdressDTO();
+            addressDTO.setCity(branch.getAddress().getCity());
+            addressDTO.setDistrict(branch.getAddress().getDistrict());
+            addressDTO.setFullAddress(branch.getAddress().getFullAddress());
+            addressDTO.setLatitude(branch.getAddress().getLatitude());
+            addressDTO.setLongitude(branch.getAddress().getLongitude());
+
+            dto.setAddressDTO(addressDTO);
         }
         return dto;
 

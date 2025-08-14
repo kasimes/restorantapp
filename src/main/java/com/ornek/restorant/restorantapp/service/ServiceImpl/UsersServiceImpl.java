@@ -1,10 +1,9 @@
 package com.ornek.restorant.restorantapp.service.ServiceImpl;
 
 import com.ornek.restorant.restorantapp.exception.notfound.CustomerNotFoundException;
-import com.ornek.restorant.restorantapp.exception.notfound.NotFoundException;
+import com.ornek.restorant.restorantapp.model.converter.AddressConverter;
 import com.ornek.restorant.restorantapp.model.converter.UsersConverter;
 import com.ornek.restorant.restorantapp.model.dto.UsersDto;
-import com.ornek.restorant.restorantapp.model.entity.Address;
 import com.ornek.restorant.restorantapp.model.entity.Users;
 import com.ornek.restorant.restorantapp.repository.AddressRepository;
 import com.ornek.restorant.restorantapp.repository.UsersRepository;
@@ -26,13 +25,13 @@ public class UsersServiceImpl implements UsersService {
     private final PasswordEncoder passwordEncoder;
     private final UsersRepository usersRepository;
     private final UsersConverter usersConverter;
-    private final AddressRepository addressRepository;
 
-    public UsersServiceImpl(PasswordEncoder passwordEncoder, UsersRepository usersRepository, UsersConverter usersConverter, AddressRepository addressRepository) {
+
+    public UsersServiceImpl(PasswordEncoder passwordEncoder, UsersRepository usersRepository, UsersConverter usersConverter) {
         this.passwordEncoder = passwordEncoder;
         this.usersRepository = usersRepository;
         this.usersConverter = usersConverter;
-        this.addressRepository = addressRepository;
+
     }
 
     @Override
@@ -55,10 +54,8 @@ public class UsersServiceImpl implements UsersService {
     @Override
     @CacheEvict(value = "usersCache",allEntries = true)//yeni kullanıcı olusturuldugunda tum kayıtlar temizlenir ve eski veriler kalmaz
     public UsersDto createCustomer(UsersDto usersDto) {
-        Address address = addressRepository.findById(usersDto.getAddressId())
-                .orElseThrow(() -> new NotFoundException("Address not found with id: " + usersDto.getAddressId()));
 
-        Users users = UsersConverter.toEntity(usersDto,address);
+        Users users = UsersConverter.toEntity(usersDto);
         users.setPassword(passwordEncoder.encode(usersDto.getPassword()));
         Users savedUsers = usersRepository.save(users);
         return usersConverter.toDto(savedUsers);
@@ -85,6 +82,10 @@ public class UsersServiceImpl implements UsersService {
         //şifre degistirilir
         if(usersDto.getPassword()!=null) {
             existingUsers.setPassword(passwordEncoder.encode(usersDto.getPassword()));
+        }
+        //adress güncelleme
+        if(usersDto.getAddressDTO()!=null) {
+            existingUsers.setAddress(AddressConverter.toEntity(usersDto.getAddressDTO()));
         }
 
         Users updatedUsers = usersRepository.save(existingUsers);

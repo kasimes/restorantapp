@@ -11,12 +11,8 @@ public class UsersDto {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private String city;        // Address.city
-    private String district;    // Address.district
-    private String fullAddress; // Address.fullAddress
-    private Double latitude;
-    private Double longitude;
-    private Long addressId;
     private String password;
     private Role role;
+    private AdressDTO addressDTO;
+
 }

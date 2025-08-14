@@ -1,6 +1,7 @@
 package com.ornek.restorant.restorantapp.model.dto;
 
 
+import com.ornek.restorant.restorantapp.model.entity.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,14 +18,11 @@ public class BranchDto {
     private Long id;
     private String name;
     private Long restaurantId;
-    private Long addressId;
-    private String city;      // Address'tan alınacak
-    private String district;
-    private String FullAddress;// Address'tan alınacak
     private BigDecimal minimumOrderAmount;
     private String openingTime;  // veya LocalTime da olabilir
     private String closingTime;
 
-    private Double latitude;
-    private Double longitude;
+    private AdressDTO addressDTO;
+
+
 }
